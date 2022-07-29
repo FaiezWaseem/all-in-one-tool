@@ -20,18 +20,26 @@ const FileUpload = () => {
       date: new Date().toUTCString()
     })
   }
-  useEffect(() => {
+  function getIp(){
     fetch("https://airforshare.com/apiv3/clip.php")
-      .then(function (data) {
-        return data.json()
-      })
-      .then(function (data) {
-        setUserIp(data.clipId)
-      })
-      .catch(function (error) {
+    .then(function (data) {
+      return data.json()
+    })
+    .then(function (data) {
+      setUserIp(data.clipId)
+      if(data.clipId === undefined){
+        // getIp()
+      }
+    })
+    .catch(function (error) {
 
-        console.warn(error)
-      });
+      console.warn(error)
+    });
+  }
+  useEffect(()=>{
+    getIp()
+  },[])
+  useEffect(() => {
       if(userIp != undefined)
     firebase.onAdded('notes/'+userIp+'/', (snap) => {
       setNotesData(item => {
@@ -43,8 +51,18 @@ const FileUpload = () => {
         ]
       })
     })
-  }, [])
+    // firebase.onRemoved('notes/'+userIp+'/', (snap) =>{
+    //   let date = snap.val().date
+    //   let title = snap.val().title
 
+    //    setNotesData(notesData.filter(item => (item.date == date && item.title == title ) ))
+    // })
+  }, [userIp])
+
+
+  function removeItemAtIndex(arr, index) {
+    return [...arr.slice(0, index), ...arr.slice(index + 1)];
+  }
   return (
     <PageLayout
       title='Notes'

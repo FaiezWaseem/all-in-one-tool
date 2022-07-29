@@ -40,6 +40,11 @@ export default function NoteCard({item , ip} ) {
      onClose()
    }   
 
+    function onDelete(){
+      let node =  finalRef.current.remove();
+      console.log(node)
+      firebase.remove(`notes/${ip}/${item.key}` , (res)=> onClose())
+    }
 
 
 
@@ -57,7 +62,7 @@ export default function NoteCard({item , ip} ) {
                 </div>
                 <div style={{"position":"absolute","top":"-15px","right":"-15px"}}>
                     <a  >
-                        <img src="assets/img/delete.png" alt="" title="delete note" /></a>
+                        <img src="assets/images/delete.png" alt="" title="delete note"  onClick={onDelete} /></a>
                 </div>
                 <h2 style={{ color : 'yellow'}} >{noteTitle.length === 0 ? 'No Title here start editting...' : noteTitle}</h2>
                 <p style={{
