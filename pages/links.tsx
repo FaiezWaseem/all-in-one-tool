@@ -65,7 +65,7 @@ const LinksPage = () => {
           </Button>
         </Box>
         <Flex flexWrap={'wrap'} justify={'space-evenly'}>
-          {links.map((link : LinkCard) => <Linkcard name={link.name} link={link.link} date={link.date} label={link.label} img={link.imglink}  />)}
+          {links.map((link : LinkCard , index : number) => <Linkcard name={link.name} link={link.link} date={link.date} label={link.label} img={link.imglink} key={index.toString()}  />)}
    
 
         </Flex>
