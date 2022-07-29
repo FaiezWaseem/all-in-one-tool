@@ -1,7 +1,6 @@
 import ExternalLink from '@/components/external-link';
 import PageLayout from '@/components/page-layout';
-import { Box, Code, Slider , SliderMark, SliderFilledTrack , SliderTrack , SliderThumb ,
-   Progress, useColorModeValue, VStack, Text, useMediaQuery } from '@chakra-ui/react';
+import {Box,Progress, useColorModeValue, VStack, Text, useMediaQuery} from '@chakra-ui/react';
 import { Input } from '@chakra-ui/react'
 import Script from 'next/script'
 import { useEffect, useState } from 'react';
@@ -10,9 +9,9 @@ const FileUpload = () => {
 
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)')
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [isUploading , setUploading] = useState<Boolean>(false)
-  const [progress , setProgress] = useState<number>(0)
-  const [link , setLink] = useState<string>('')
+  const [isUploading, setUploading] = useState<Boolean>(false)
+  const [progress, setProgress] = useState<number>(0)
+  const [link, setLink] = useState<string>('')
 
   function getAccessToken() {
     const id = 'AKfycbz19inbya5CcwM48qEXSQk4VssWSQNCcvcrmUBIk6QVgGsUoOBi2t9Cjn7Cy_6UnrW9'
@@ -65,7 +64,7 @@ const FileUpload = () => {
       fileBuffer: f.result,
       accessToken: accessToken
     };
-     // @ts-expect-error
+    // @ts-expect-error
     const ru = new ResumableUploadToGoogleDrive();
     ru.Do(resource, function (res, err) {
       if (err) {
@@ -74,14 +73,14 @@ const FileUpload = () => {
       }
       try {
         setProgress(100)
-          setLink("https://drive.google.com/uc?export=download&id=" + res.result.id);
+        setLink("https://drive.google.com/uc?export=download&id=" + res.result.id);
         getFileShaingPermission(res.result.id)
       } catch (err) {
         console.log(res)
       }
       let msg = "";
       if (res.status == "Uploading") {
-        setProgress( (res.progressNumber.current / res.progressNumber.end) * 100)
+        setProgress((res.progressNumber.current / res.progressNumber.end) * 100)
       } else {
         msg = res.status;
       }
@@ -93,24 +92,24 @@ const FileUpload = () => {
     const file = obj.target.files[0];
     if (file.name != "") {
       let fr = new FileReader();
-       // @ts-expect-error
+      // @ts-expect-error
       fr.fileName = file.name;
-       // @ts-expect-error
+      // @ts-expect-error
       fr.fileSize = file.size;
-       // @ts-expect-error
+      // @ts-expect-error
       fr.fileType = file.type;
       fr.readAsArrayBuffer(file);
       fr.onload = resumableUpload;
     }
   }
 
-   useEffect(()=>{
-     getAccessToken()
-   },[])
+  useEffect(() => {
+    getAccessToken()
+  }, [])
 
-   useEffect(()=>{
-   console.log(progress)
-   },[progress])
+  useEffect(() => {
+    console.log(progress)
+  }, [progress])
 
   return (
     <PageLayout
@@ -131,11 +130,11 @@ const FileUpload = () => {
           <Input type={'file'} w={isLargerThan768 ? '30%' : '80%'} onChange={run} />
         </Box>
         <VStack w={'100%'} justifyContent={'center'} paddingRight={20}>
-  
-        <Progress hasStripe value={progress} width={200} />
+
+          <Progress hasStripe value={progress} width={200} />
 
           <p>{progress}%</p>
-          <Code colorScheme='yellow' children={link} />
+          <p style={{ color : 'yellow'}}>{link}</p>
         </VStack>
       </VStack>
 
