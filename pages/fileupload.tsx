@@ -119,7 +119,6 @@ const FileUpload = () => {
     >
       <Script src="https://apis.google.com/js/api.js" />
       <Script src="https://cdn.jsdelivr.net/gh/tanaikech/ResumableUploadForGoogleDrive_js@master/resumableupload_js.min.js" />
-      <script></script>
       <VStack px={4} py={6} w={'100%'} height='95vh'
         bg={useColorModeValue('white', 'gray.800')}
         justify={'center'} align={'center'}>
@@ -146,44 +145,3 @@ const FileUpload = () => {
 
 export default FileUpload;
 
-
-function SliderMarkExample({value}) {
-  const [sliderValue, setSliderValue] = useState(value)
-
-  const labelStyles = {
-    mt: '2',
-    ml: '-2.5',
-    fontSize: 'sm',
-  }
-
-  return (
-    <Box pt={6} pb={2}>
-      <Slider aria-label='slider-ex-6' >
-        <SliderMark value={25} {...labelStyles}>
-          25%
-        </SliderMark>
-        <SliderMark value={50} {...labelStyles}>
-          50%
-        </SliderMark>
-        <SliderMark value={75} {...labelStyles}>
-          75%
-        </SliderMark>
-        <SliderMark
-          value={sliderValue}
-          textAlign='center'
-          bg='blue.500'
-          color='white'
-          mt='-10'
-          ml='-5'
-          w='12'
-        >
-          {sliderValue}%
-        </SliderMark>
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb />
-      </Slider>
-    </Box>
-  )
-}
