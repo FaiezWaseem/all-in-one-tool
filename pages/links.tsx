@@ -1,6 +1,6 @@
 import ExternalLink from '@/components/external-link';
 import PageLayout from '@/components/page-layout';
-import { Box, Code, Flex, Button, useColorModeValue, VStack, Text, useMediaQuery } from '@chakra-ui/react';
+import { Box, Code, Flex, Button, useColorModeValue, VStack, Spinner , useMediaQuery } from '@chakra-ui/react';
 import { Input } from '@chakra-ui/react'
 import { FcLink } from 'react-icons/fc'
 import Linkcard from '@/components/links/linkCard'
@@ -26,12 +26,20 @@ const LinksPage = () => {
         alert('please Enter website link')
         return ;
       }
+      function domainName (webLink){
+        
       let domain = (new URL(webLink));
+        if(domain.pathname !== '/'){
+          return domain.pathname
+      }else{
+          return domain.hostname
+      }
+      }
       firebase.push('weblinks' , {
         label : 'web',
         link : webLink,
         imglink : imgLink,
-        name : domain.hostname,
+        name : domainName(webLink),
         date : date
       })
       setImgLink('')
@@ -65,6 +73,7 @@ const LinksPage = () => {
           </Button>
         </Box>
         <Flex flexWrap={'wrap'} justify={'space-evenly'}>
+        {links.length <= 0 && <Spinner />}
           {links.map((link : LinkCard , index : number) => <Linkcard name={link.name} link={link.link} date={link.date} label={link.label} img={link.imglink} key={index.toString()}  />)}
    
 

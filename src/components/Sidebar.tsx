@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import {
   IconButton,
   Box,
@@ -13,6 +13,7 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
+  Tooltip
 } from '@chakra-ui/react';
 import {
 
@@ -41,11 +42,19 @@ const LinkItems: Array<LinkItemProps> = [
 
 export default function SimpleSidebar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [visites , setVisits] = useState(0);
+
+  useEffect(()=>{
+    fetch("https://api.countapi.xyz/hit/aoit-ashy.vercel.app")
+    .then(res => res.json())
+    .then(res => setVisits(res.value))
+  },[])
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}
+        visites={visites}
       />
       <Drawer
         autoFocus={false}
@@ -56,11 +65,11 @@ export default function SimpleSidebar({ children }: { children: ReactNode }) {
         onOverlayClick={onClose}
         size="full">
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent onClose={onClose}  visites={visites} />
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
+      <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} visites={visites} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -70,9 +79,10 @@ export default function SimpleSidebar({ children }: { children: ReactNode }) {
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
+  visites : number | string ;
 }
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({ onClose,visites , ...rest }: SidebarProps) => {
   return (
     <Box
       bg={useColorModeValue('white', 'gray.900')}
@@ -86,6 +96,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
           AIOT
         </Text>
+        <Tooltip label='Total page visit count'>
+        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold"  _hover={{
+          cursor : 'pointer'
+        }}>
+         {visites}
+        </Text>
+        </Tooltip>
         <ThemeButton />
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
@@ -136,8 +153,9 @@ const NavItem = ({ icon, link , children, ...rest }: NavItemProps) => {
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
+  visites : number | string ;
 }
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+const MobileNav = ({ onOpen,visites , ...rest }: MobileProps) => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}

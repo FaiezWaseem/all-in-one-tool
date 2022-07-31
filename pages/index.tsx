@@ -67,12 +67,12 @@ const IndexPage = () => {
   return (
     <PageLayout
       title='Home'
-      description='Discover a starter kit which includes Next.js, Chakra-UI, Framer-Motion in Typescript. You have few components, Internationalization, SEO and more in this template ! Enjoy coding.'
+      description='AIOT All in One Tool , is a tool to provide simple features with ease. like text sharing , image sharing file sharing keeping notes and saving links.'
     >
       <VStack px={4} py={6} w={'100%'} height='95vh' bg={useColorModeValue('white', 'gray.800')}
-        justify={'center'} align={'center'}>
+        justify={isLargerThan768 ? 'center' : 'flex-start'} align={isLargerThan768 ? 'center' : 'flex-start'}>
         <Box w={'100%'}>
-          <Text fontWeight={'bold'} color={'blue.500'} textAlign={'center'} fontSize={'4xl'} py={12}>
+          <Text fontWeight={'bold'} color={'blue.500'} textAlign={'center'} fontSize={'4xl'} py={isLargerThan768 ? 12 : 3}>
             AirForShare
           </Text>
         </Box>

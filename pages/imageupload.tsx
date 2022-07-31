@@ -1,5 +1,5 @@
 import PageLayout from '@/components/page-layout';
-import { Box, Code, Flex, Button, useColorModeValue, VStack, Text, useMediaQuery } from '@chakra-ui/react';
+import { Box, Spinner , Flex, Button, useColorModeValue, VStack, Text, useMediaQuery } from '@chakra-ui/react';
 import { FcAddImage } from 'react-icons/fc'
 import ImageCard from '@/components/imageupload/ImageCard'
 import { useState } from 'react';
@@ -86,6 +86,7 @@ const FileUpload = () => {
           </Button>
         </Box>
         <Flex flexWrap={'wrap'} justify={'space-evenly'}>
+          {imagesdata.length <= 0 && <Spinner />}
           {imagesdata.map((data , index) => <ImageCard item={data} key={index.toString()} />)}
 
         </Flex>

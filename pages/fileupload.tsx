@@ -1,6 +1,6 @@
 import ExternalLink from '@/components/external-link';
 import PageLayout from '@/components/page-layout';
-import {Box,Progress, useColorModeValue, VStack, Text, useMediaQuery} from '@chakra-ui/react';
+import { Box, Progress, useColorModeValue, VStack, Text, useMediaQuery, Button , useToast } from '@chakra-ui/react';
 import { Input } from '@chakra-ui/react'
 import Script from 'next/script'
 import { useEffect, useState } from 'react';
@@ -12,7 +12,7 @@ const FileUpload = () => {
   const [isUploading, setUploading] = useState<Boolean>(false)
   const [progress, setProgress] = useState<number>(0)
   const [link, setLink] = useState<string>('')
-
+  const toast = useToast()
   function getAccessToken() {
     const id = 'AKfycbz19inbya5CcwM48qEXSQk4VssWSQNCcvcrmUBIk6QVgGsUoOBi2t9Cjn7Cy_6UnrW9'
     const url = `https://script.google.com/macros/s/${id}/exec`;
@@ -87,8 +87,7 @@ const FileUpload = () => {
     });
   }
   function run(obj) {
-    console.log(obj.target.files[0])
-    console.log(obj)
+    setLink('')
     const file = obj.target.files[0];
     if (file.name != "") {
       let fr = new FileReader();
@@ -101,6 +100,15 @@ const FileUpload = () => {
       fr.readAsArrayBuffer(file);
       fr.onload = resumableUpload;
     }
+  }
+  function copytext(text) {
+    var input = document.createElement('textarea');
+    input.innerHTML = text;
+    document.body.appendChild(input);
+    input.select();
+    var resultCopy = document.execCommand("copy");
+    document.body.removeChild(input);
+    return resultCopy;  
   }
 
   useEffect(() => {
@@ -120,21 +128,42 @@ const FileUpload = () => {
       <Script src="https://cdn.jsdelivr.net/gh/tanaikech/ResumableUploadForGoogleDrive_js@master/resumableupload_js.min.js" />
       <VStack px={4} py={6} w={'100%'} height='95vh'
         bg={useColorModeValue('white', 'gray.800')}
-        justify={'center'} align={'center'}>
+        justify={isLargerThan768 ? 'center' : 'flex-start'} align={isLargerThan768 ? 'center' : 'flex-start'}>
         <Box w={'100%'}>
-          <Text fontWeight={'bold'} color={'blue.500'} textAlign={'center'} fontSize={'4xl'} py={12}>
+          <Text fontWeight={'bold'} color={'blue.500'} textAlign={'center'} fontSize={'4xl'} py={ isLargerThan768 ? 12 : 3}>
             FileUpload
           </Text>
         </Box>
         <Box w={'100%'} display={'flex'} justifyContent={'center'} py={12}>
           <Input type={'file'} w={isLargerThan768 ? '30%' : '80%'} onChange={run} />
         </Box>
-        <VStack w={'100%'} justifyContent={'center'} paddingRight={20}>
+        <VStack w={'100%'} justifyContent={'center'}>
 
           <Progress hasStripe value={progress} width={200} />
 
           <p>{progress}%</p>
-          <p style={{ color : 'yellow'}}>{link}</p>
+          <p style={
+            {
+              background: 'yellow',
+              wordBreak: 'break-all',
+              margin: 20,
+              color: 'black',
+              padding: 6,
+              borderRadius : 20
+            }
+          }>{link}</p>
+           <Button onClick={()=>{ 
+            copytext(link);
+            toast({
+              title: 'Message',
+              description: "Link Copied",
+              status: 'success',
+              duration: 3000,
+              position : 'top',
+              isClosable: true,
+            })
+          
+            }}>Copy Text</Button>
         </VStack>
       </VStack>
 

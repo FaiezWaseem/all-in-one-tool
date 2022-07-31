@@ -6,11 +6,23 @@ import {
     Text,
     Stack,
     Image,
-    Button
+    Button , 
+    useToast
   } from '@chakra-ui/react';
   
  
   export default function ImageCard({item } : any) {
+    const toast = useToast()
+    function copytext(text) {
+      var input = document.createElement('textarea');
+      input.innerHTML = text;
+      document.body.appendChild(input);
+      input.select();
+      var resultCopy = document.execCommand("copy");
+      document.body.removeChild(input);
+      return resultCopy;  
+    }
+
     return (
       <Center py={12}>
         <Box
@@ -58,10 +70,21 @@ import {
               {item.time}
             </Text>
             <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
-              {item.title}
+              {item.title.length > 40 ? item.title.substring(0,40) + '...' : item.title }
             </Heading>
             <Stack direction={'row'} align={'center'}>
              <Button colorScheme={'facebook'} color='white' as='a' href={item.full_url} >Download</Button>
+             <Button colorScheme={'teal'} color='white' onClick={()=> { 
+              copytext(item.full_url); 
+              toast({
+                title: 'Message',
+                description: "Link  copied",
+                status: 'success',
+                position : 'top',
+                duration: 3000,
+                isClosable: true,
+              })
+              }}  >Copy Link</Button>
             </Stack>
           </Stack>
         </Box>
