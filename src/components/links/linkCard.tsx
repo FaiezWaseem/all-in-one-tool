@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   AspectRatio,
   Badge,
@@ -9,11 +8,20 @@ import {
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
 
-const LinkCard = ({ name, link, date, label , img }: { img :string, name: string, link: string, date: string, label: string | null }): JSX.Element => {
-
-
+const LinkCard = ({
+  name,
+  link,
+  date,
+  label,
+  img,
+}: {
+  img: string;
+  name: string;
+  link: string;
+  date: string;
+  label: string | null;
+}): JSX.Element => {
   return (
     <Box as='a' href={link} height='100%' m={3}>
       <VStack
@@ -56,7 +64,7 @@ const LinkCard = ({ name, link, date, label , img }: { img :string, name: string
             borderColor={useColorModeValue(`gray.100`, `gray.700`)}
           >
             <Image
-              src={`https://rdl.ink/render/${encodeURIComponent(img)}`}
+              src={`https://rdl.ink/render/${encodeURIComponent(link)}`}
               objectFit='cover'
               alt={name + ' screenshot'}
               objectPosition='0px 0px'
@@ -67,7 +75,12 @@ const LinkCard = ({ name, link, date, label , img }: { img :string, name: string
                   height='100%'
                   bg={useColorModeValue(`gray.100`, `gray.700`)}
                 >
-                  <Text position='absolute' top='50%' left='50%' transform='translate(-50%, -50%)'>
+                  <Text
+                    position='absolute'
+                    top='50%'
+                    left='50%'
+                    transform='translate(-50%, -50%)'
+                  >
                     No Image Found
                   </Text>
                 </Box>
@@ -90,7 +103,10 @@ const LinkCard = ({ name, link, date, label , img }: { img :string, name: string
             <Text fontSize='sm' noOfLines={1} fontWeight='500'>
               {name}
             </Text>
-            <Text fontSize='sm' color={useColorModeValue(`gray.600`, `gray.400`)}>
+            <Text
+              fontSize='sm'
+              color={useColorModeValue(`gray.600`, `gray.400`)}
+            >
               {date}
             </Text>
           </Flex>
