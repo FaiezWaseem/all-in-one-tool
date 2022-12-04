@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 
-export default function ({ item, ip }) {
+export default function CodeCard({ item, ip }) {
   const [noteTitle, setNoteTitle] = useState<string>(item.title);
   const [noteContent, setNoteContent] = useState<string>(item.content);
   const [content, setcontent] = useState<string>(item.content);

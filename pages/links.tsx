@@ -24,13 +24,10 @@ const LinksPage = () => {
 
   let today = new Date();
 
-  // @ts-expect-error
-  let date =
-    today.getDate() +
-    '-' +
-    parseInt(today.getMonth() + 1) +
-    '-' +
-    today.getFullYear();
+  let date = `
+  ${today.getDate()}-${parseInt(
+    (today.getMonth() + 1).toString()
+  ).toString()}-${today.getFullYear()}`;
 
   function AddLink() {
     if (webLink.length <= 4) {
