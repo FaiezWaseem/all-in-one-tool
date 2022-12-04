@@ -1,5 +1,5 @@
 import firebase from '@/backend/firebase';
-import NoteCard from '@/components/notes/NoteCard';
+import CodeCard from '@/components/codesCard/CodeCard';
 import PageLayout from '@/components/page-layout';
 import {
   Box,
@@ -13,52 +13,35 @@ import {
 import { useEffect, useState } from 'react';
 import { IoIosAddCircle } from 'react-icons/io';
 
-const FileUpload = () => {
+const Codes = () => {
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
   const [notesData, setNotesData] = useState([]);
-  const [userIp, setUserIp] = useState<string | undefined | number>(undefined);
+  const [userIp, setUserIp] = useState<string | undefined | number>('code');
   function AddNote() {
-    if (userIp != undefined)
-      firebase.push('notes/' + userIp, {
+    if (userIp != undefined) {
+      const key = firebase.getPushKey();
+      firebase.set('notes/' + userIp + '/' + key, {
         title: '',
         content: '',
         date: new Date().toUTCString(),
+        key,
       });
+    }
   }
-  function getIp() {
-    fetch('https://airforshare.com/apiv3/clip.php')
-      .then(function (data) {
-        return data.json();
-      })
-      .then(function (data) {
-        setUserIp(data.clipId);
-        console.log(data.clipId);
-        if (data.clipId === undefined) {
-          // getIp()
-        }
-      })
-      .catch(function (error) {
-        console.warn(error);
-      });
-  }
-  useEffect(() => {
-    getIp();
-  }, []);
+
   useEffect(() => {
     if (userIp != undefined) {
       firebase.onAdded('notes/' + userIp + '/', (snap) => {
         setNotesData((item) => {
           let obj = snap.val();
-          obj.key = snap.key;
           return [obj, ...item];
         });
       });
-      console.log(notesData);
-      firebase.onRemoved('notes/' + userIp + '/', (snap) => {
-        let date = snap.val().date;
-        let title = snap.val().title;
 
-        setNotesData(notesData.filter((item) => item.date == date));
+      firebase.onRemoved('notes/' + userIp + '/', (snap) => {
+        let key = snap.val().key;
+
+        setNotesData(notesData.filter((item) => item.key == key));
       });
     }
   }, [userIp]);
@@ -69,7 +52,7 @@ const FileUpload = () => {
   return (
     <PageLayout
       title='Notes'
-      description='Discover a starter kit which includes Next.js, Chakra-UI, Framer-Motion in Typescript. You have few components, Internationalization, SEO and more in this template ! Enjoy coding.'
+      description='AIOT - AIOT is an All in One Tool Thats provides the tools like text sharing , large file uploads , links saving , code snippet sharing etc...'
     >
       <VStack
         px={4}
@@ -82,24 +65,24 @@ const FileUpload = () => {
         <Box w={'100%'} display={'flex'} justifyContent={'space-evenly'}>
           <Text
             fontWeight={'bold'}
-            color={'orange.400'}
+            color={'blue.400'}
             textAlign={'center'}
             fontSize={isLargerThan768 ? '4xl' : '1rem'}
           >
-            Notes ~ Add notes or codes snippets
+            codes snippets
           </Text>
           <Button
             leftIcon={<IoIosAddCircle />}
-            colorScheme='orange'
+            colorScheme='blue'
             variant='solid'
             onClick={AddNote}
           >
-            Add Note
+            Add Snippet
           </Button>
         </Box>
         <Flex flexWrap={'wrap'} justify={'space-evenly'}>
           {notesData.map((item, index) => (
-            <NoteCard item={item} key={index.toString()} ip={userIp} />
+            <CodeCard item={item} key={index.toString()} ip={userIp} />
           ))}
         </Flex>
       </VStack>
@@ -107,4 +90,4 @@ const FileUpload = () => {
   );
 };
 
-export default FileUpload;
+export default Codes;

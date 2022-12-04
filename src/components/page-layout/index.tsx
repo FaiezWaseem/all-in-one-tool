@@ -1,8 +1,8 @@
-import { Container, ContainerProps , Box } from '@chakra-ui/react';
-import { motion, Variants } from 'framer-motion';
+import SimpleSidebar from '@/components/Sidebar';
+import { Container, ContainerProps } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import { NextSeo } from 'next-seo';
 import { ReactNode } from 'react';
-import SimpleSidebar from '@/components/Sidebar'
 
 type PageProps = {
   title: string;
@@ -15,7 +15,7 @@ const PageLayout = ({ title, description, children }: PageProps) => {
   return (
     <>
       <NextSeo
-        title={ title + ' | all in One Tool' }
+        title={title + ' | all in One Tool'}
         description={description}
         twitter={{
           cardType: 'faiezwaseem',
@@ -28,7 +28,7 @@ const PageLayout = ({ title, description, children }: PageProps) => {
           locale: 'en_US',
           images: [
             {
-              url: 'https://www.hakkaofdev.fr/assets/images/social.png',
+              url: 'https://www.faiezwaseem.live/static/images/profile.png',
               width: 1200,
               height: 630,
               alt: 'All in One Tool ',
@@ -39,15 +39,11 @@ const PageLayout = ({ title, description, children }: PageProps) => {
         additionalLinkTags={[
           {
             rel: 'icon',
-            href: 'https://www.hakkaofdev.fr/favicon.ico',
+            href: 'https://www.faiezwaseem.live/static/images/profile.png',
           },
         ]}
       />
-      <SimpleSidebar
-         
-      >
-        {children}
-      </SimpleSidebar>
+      <SimpleSidebar>{children}</SimpleSidebar>
     </>
   );
 };
